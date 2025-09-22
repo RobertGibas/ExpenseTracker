@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}Lista wydatków{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1><i class="bi bi-list-ul"></i> Lista wydatków</h1>
+      <a href="{% url 'expenses:add' %}" class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Dodaj wydatek
+      </a>
+    </div>
+
+    <!-- Filtry -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-funnel"></i> Filtry</h5>
+      </div>
+      <div class="card-body">
+        <form method="get" class="row g-3">
+          <div class="col-md-3">
+            <label for="{{ filter_form.start_date.id_for_label }}" class="form-label">Data od</label>
+            {{ filter_form.start_date }}
+          </div>
+          <div class="col-md-3">
+            <label for="{{ filter_form.end_date.id_for_label }}" class="form-label">Data do</label>
+            {{ filter_form.end_date }}
+          </div>
+          <div class="col-md-3">
+            <label for="{{ filter_form.category.id_for_label }}" class="form-label">Kategoria</label>
+            {{ filter_form.category }}
+          </div>
+          <div class="col-md-3 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary me-2">
+              <i class="bi bi-search"></i> Filtruj
+            </button>
+            <a href="{% url 'expenses:list' %}" class="btn btn-outline-secondary">
+              <i class="bi bi-arrow-clockwise"></i> Wyczyść
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Podsumowanie -->
+    <div class="alert alert-info">
+      <h5 class="mb-0">
+        <i class="bi bi-calculator"></i> 
+        Suma wydatków: <span class="total-amount">{{ total_sum|floatformat:2 }} zł</span>
+      </h5>
+    </div>
+
+    <!-- Lista wydatków -->
+    {% if expenses %}
+      <div class="row">
+        {% for expense in expenses %}
+          <div class="col-md-6 col-lg-4 mb-3">
+            <div class="card expense-card h-100">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <h6 class="card-title mb-0">{{ expense.category.name }}</h6>
+                  <span class="badge bg-primary">{{ expense.date }}</span>
+                </div>
+                <h5 class="text-danger mb-2">{{ expense.amount|floatformat:2 }} zł</h5>
+                {% if expense.description %}
+                  <p class="card-text text-muted small">{{ expense.description }}</p>
+                {% endif %}
+              </div>
+              <div class="card-footer bg-transparent">
+                <div class="btn-group w-100" role="group">
+                  <a href="{% url 'expenses:edit' expense.pk %}" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-pencil"></i> Edytuj
+                  </a>
+                  <a href="{% url 'expenses:delete' expense.pk %}" class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-trash"></i> Usuń
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Paginacja -->
+      {% if expenses.has_other_pages %}
+        <nav aria-label="Paginacja">
+          <ul class="pagination justify-content-center">
+            {% if expenses.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ expenses.previous_page_number }}">Poprzednia</a>
+              </li>
+            {% endif %}
+            
+            <li class="page-item active">
+              <span class="page-link">
+                Strona {{ expenses.number }} z {{ expenses.paginator.num_pages }}
+              </span>
+            </li>
+            
+            {% if expenses.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ expenses.next_page_number }}">Następna</a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
+    {% else %}
+      <div class="text-center py-5">
+        <i class="bi bi-inbox display-1 text-muted"></i>
+        <h3 class="text-muted mt-3">Brak wydatków</h3>
+        <p class="text-muted">Dodaj swój pierwszy wydatek, klikając przycisk powyżej.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

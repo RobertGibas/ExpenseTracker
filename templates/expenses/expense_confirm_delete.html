@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Usuwanie wydatku{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card border-danger">
+      <div class="card-header bg-danger text-white">
+        <h4 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Potwierdzenie usunięcia</h4>
+      </div>
+      <div class="card-body">
+        <p class="mb-3">Czy na pewno chcesz usunąć ten wydatek?</p>
+        
+        <div class="card bg-light">
+          <div class="card-body">
+            <h5 class="card-title">{{ expense.category.name }}</h5>
+            <p class="card-text">
+              <strong>Kwota:</strong> {{ expense.amount|floatformat:2 }} zł<br>
+              <strong>Data:</strong> {{ expense.date }}<br>
+              {% if expense.description %}
+                <strong>Opis:</strong> {{ expense.description }}
+              {% endif %}
+            </p>
+          </div>
+        </div>
+        
+        <form method="post" class="mt-3">
+          {% csrf_token %}
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="{% url 'expenses:list' %}" class="btn btn-outline-secondary">
+              <i class="bi bi-arrow-left"></i> Anuluj
+            </a>
+            <button type="submit" class="btn btn-danger">
+              <i class="bi bi-trash"></i> Usuń
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

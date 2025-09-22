@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin123
+      KC_DB: dev-file
+    ports:
+      - "8080:8080"
+    command: start-dev
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+    networks:
+      - expense-network
+
+volumes:
+  keycloak_data:
+
+networks:
+  expense-network:
+    driver: bridge
