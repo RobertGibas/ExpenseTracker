@@ -139,24 +139,6 @@ Projekt używa Git Flow z następującymi branchami:
 - **feature/*** - nowe funkcjonalności
 - **hotfix/*** - szybkie poprawki
 
-### Przykładowe komendy:
-
-```bash
-# Praca na nowej funkcjonalności
-git checkout develop
-git checkout -b feature/new-feature
-# ... rozwój funkcjonalności ...
-git checkout develop
-git merge feature/new-feature
-git push origin develop
-
-# Wersja produkcyjna
-git checkout main
-git merge develop
-git tag v1.0.0
-git push origin main --tags
-```
-
 ## 🚀 Deployment
 
 ### Docker
@@ -167,39 +149,4 @@ docker build -t expense-tracker .
 
 # Run
 docker run -p 8000:8000 expense-tracker
-```
 
-### Heroku
-
-```bash
-# Instalacja Heroku CLI
-# Utworzenie aplikacji
-heroku create your-app-name
-
-# Konfiguracja zmiennych środowiskowych
-heroku config:set SECRET_KEY="your-secret-key"
-heroku config:set DEBUG=False
-
-# Deployment
-git push heroku main
-```
-
-## 🤝 Wkład w projekt
-
-1. Fork repozytorium
-2. Utwórz branch dla nowej funkcjonalności (`git checkout -b feature/amazing-feature`)
-3. Commit zmian (`git commit -m 'Add amazing feature'`)
-4. Push do brancha (`git push origin feature/amazing-feature`)
-5. Otwórz Pull Request
-
-## 📝 Licencja
-
-Ten projekt jest licencjonowany na licencji MIT - zobacz plik [LICENSE](LICENSE) dla szczegółów.
-
-## 📞 Kontakt
-
-Jeśli masz pytania lub sugestie, otwórz issue lub skontaktuj się z autorem.
-
----
-
-**Uwaga**: To jest projekt deweloperski. Przed użyciem w produkcji upewnij się, że wszystkie ustawienia bezpieczeństwa są odpowiednio skonfigurowane.
